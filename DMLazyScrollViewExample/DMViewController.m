@@ -12,9 +12,11 @@
 #define ARC4RANDOM_MAX	0x100000000
 
 
+
 @interface DMViewController () <DMLazyScrollViewDelegate> {
     DMLazyScrollView* lazyScrollView;
     NSMutableArray*    viewControllerArray;
+    NSArray *charArray;
 }
 @end
 
@@ -24,14 +26,15 @@
     [super viewDidLoad];
     
     // PREPARE PAGES
-    NSUInteger numberOfPages = 100;
+    charArray = @[@"人", @"一", @"口", @"的", @"日", @"白", @"土", @"又", @"言", @"勺"];
+    NSUInteger numberOfPages = charArray.count;
     viewControllerArray = [[NSMutableArray alloc] initWithCapacity:numberOfPages];
     for (NSUInteger k = 0; k < numberOfPages; ++k) {
         [viewControllerArray addObject:[NSNull null]];
     }
     
     // PREPARE LAZY VIEW
-    CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height-50);
+    CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     lazyScrollView = [[DMLazyScrollView alloc] initWithFrame:rect];
     [lazyScrollView setEnableCircularScroll:NO];
     [lazyScrollView setAutoPlay:NO];
@@ -76,6 +79,8 @@
 }
 
 - (UIViewController *) controllerAtIndex:(NSInteger) index {
+//    NSArray *charArray = @[@"人", @"一", @"口", @"的", @"日", @"白", @"土", @"又", @"言", @"勺"];
+    
     if (index > viewControllerArray.count || index < 0) return nil;
     id res = [viewControllerArray objectAtIndex:index];
     if (res == [NSNull null]) {
@@ -87,9 +92,10 @@
         
         UILabel* label = [[UILabel alloc] initWithFrame:contr.view.bounds];
         label.backgroundColor = [UIColor clearColor];
-        label.text = [NSString stringWithFormat:@"%ld",(long)index];
+        label.text = [NSString stringWithFormat:@"%@",charArray[index]];
         label.textAlignment = NSTextAlignmentCenter;
-        label.font = [UIFont boldSystemFontOfSize:100];
+//        label.font = [UIFont systemFontOfSize:100];
+        label.font = [UIFont fontWithName:@"HelveticaNeue-Thin" size:200.0];
         [contr.view addSubview:label];
         
         [viewControllerArray replaceObjectAtIndex:index withObject:contr];
